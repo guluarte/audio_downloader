@@ -2,8 +2,10 @@ import urllib
 from urlparse import urljoin
 
 class Downloader(object):
+
     def __init__(self, base_url):
         self.base_url = base_url
+
 
     def set_base_url(self, base_url):
         self.base_url = base_url
