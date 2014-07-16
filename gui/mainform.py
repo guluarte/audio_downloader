@@ -53,24 +53,27 @@ class MainForm(wx.Frame):
 
 
     def OnDownload(self, e):
+
         self.button_download.Enable(False)
         words_text = self.text_box.GetValue()
         words_not_downloaded = list()
-        if len(words_text) > 0:
-            words = words_text.split('\n')
+        words = words_text.split('\n')
+        len_words_text = len(words_text)
+        if len_words_text > 0:
             for word in words:
                 try:
                     self.model.download(word)
                 except:
                     print 'error'
                     words_not_downloaded.append(word)
+
         else:
             wx.MessageBox('Enter some words', 'Info', wx.OK | wx.ICON_INFORMATION)
         self.button_download.Enable(True)
 
         if len(words_not_downloaded) > 0:
             wx.MessageBox('Some words couln\'t be downloaded', 'Info', wx.OK | wx.ICON_ERROR)
-        else:
+        elif len_words_text > 0:
             wx.MessageBox('Download complete!', 'Info', wx.OK | wx.ICON_INFORMATION)
 
         self.text_box.SetValue('\n'.join(words_not_downloaded))
