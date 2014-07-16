@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from gui.mainform import MainForm
 from model.downloader import Downloader
 
