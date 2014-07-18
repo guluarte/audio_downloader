@@ -15,7 +15,6 @@ class MainForm(wx.Frame):
         panel = wx.Panel(self)
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-
         font = wx.SystemSettings_GetFont(wx.SYS_SYSTEM_FONT)
         font.SetPointSize(8)
 
@@ -25,7 +24,6 @@ class MainForm(wx.Frame):
 
         self.text_box_base_url = wx.TextCtrl(panel)
         sizer.Add(self.text_box_base_url,flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.BOTTOM, border=5)
-
 
         label = wx.StaticText(panel, label='List of words, one per line:')
         label.SetFont(font)
@@ -55,11 +53,15 @@ class MainForm(wx.Frame):
         wx.MessageBox('Download completed', 'Info', wx.OK|wx.ICON_INFORMATION)
 
 
+    def show_completed_dialog(self, num_words_not_downloaded, len_words_text):
+        if num_words_not_downloaded > 0:
+            wx.MessageBox('Some words couln\'t be downloaded', 'Info', wx.OK | wx.ICON_ERROR)
+        elif len_words_text > 0:
+            wx.MessageBox('Download complete!', 'Info', wx.OK | wx.ICON_INFORMATION)
+
     def OnDownload(self, e):
-
-
         self.button_download.Enable(False)
-        words_text = self.text_box.GetValue()
+        words_text = self.text_box.GetValue().strip()
         words_not_downloaded = list()
         words = words_text.split('\n')
         len_words_text = len(words_text)
@@ -81,10 +83,7 @@ class MainForm(wx.Frame):
 
         self.button_download.Enable(True)
 
-        if len(words_not_downloaded) > 0:
-            wx.MessageBox('Some words couln\'t be downloaded', 'Info', wx.OK | wx.ICON_ERROR)
-        elif len_words_text > 0:
-            wx.MessageBox('Download complete!', 'Info', wx.OK | wx.ICON_INFORMATION)
+        self.show_completed_dialog(len(words_not_downloaded), len_words_text)
 
         self.text_box.SetValue('\n'.join(words_not_downloaded))
 
