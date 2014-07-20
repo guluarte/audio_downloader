@@ -1,5 +1,6 @@
 import urllib
 from urlparse import urljoin
+import os
 
 class Downloader(object):
 
@@ -22,4 +23,7 @@ class Downloader(object):
         filename = word + '.mp3'
         download_url = self.join_url(filename)
         full_path = './download/'+filename
-        urllib.urlretrieve(download_url,full_path)
+        file_out, headers = urllib.urlretrieve(download_url,full_path)
+        if not "audio/mpeg" in headers["content-type"]:
+            os.remove(file_out)
+            raise Exception("Downloaded File is not an audio file!")
